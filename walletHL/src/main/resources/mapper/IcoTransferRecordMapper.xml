@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.wallet.mapper.IcoTransferRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.IcoTransferRecord">
+    <constructor>
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="account" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="remainder_money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cost" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="currency" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="rela_user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="rela_account" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="rela_address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="by_user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ico_transfer_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.IcoTransferRecord">
+    insert into ico_transfer_record (id, user_id, account, 
+      money, remainder_money, cost, 
+      status, currency, rela_user_id, 
+      rela_account, rela_address, order_no, 
+      create_time, update_time, by_user_id, 
+      code, remark)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{remainderMoney,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{relaUserId,jdbcType=VARCHAR}, 
+      #{relaAccount,jdbcType=VARCHAR}, #{relaAddress,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{byUserId,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.IcoTransferRecord">
+    update ico_transfer_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      rela_user_id = #{relaUserId,jdbcType=VARCHAR},
+      rela_account = #{relaAccount,jdbcType=VARCHAR},
+      rela_address = #{relaAddress,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, account, money, remainder_money, cost, status, currency, rela_user_id, 
+    rela_account, rela_address, order_no, create_time, update_time, by_user_id, code, 
+    remark
+    from ico_transfer_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, account, money, remainder_money, cost, status, currency, rela_user_id, 
+    rela_account, rela_address, order_no, create_time, update_time, by_user_id, code, 
+    remark
+    from ico_transfer_record
+  </select>
+</mapper>

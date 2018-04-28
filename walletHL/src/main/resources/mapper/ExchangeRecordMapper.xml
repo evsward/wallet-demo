@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.ExchangeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.ExchangeRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="trade_in_out" property="tradeInOut" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="amnt" property="amnt" jdbcType="DECIMAL" />
+    <result column="remainder_money" property="remainderMoney" jdbcType="DECIMAL" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="by_user_id" property="byUserId" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, account,trade_in_out, money, price, amnt, remainder_money, cost, status, currency, 
+    order_no, create_time, update_time, by_user_id, code, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ico_exchange_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ico_exchange_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.ExchangeRecord" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into ico_exchange_record (id, user_id, account, trade_in_out,
+      money, price, amnt, 
+      remainder_money, cost, status, 
+      currency, order_no, create_time, 
+      update_time, by_user_id, code, 
+      remark)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{trade_in_out,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{amnt,jdbcType=DECIMAL}, 
+      #{remainderMoney,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{byUserId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.ExchangeRecord" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into ico_exchange_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="trade_in_out != null" >
+        trade_in_out,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amnt != null" >
+        amnt,
+      </if>
+      <if test="remainderMoney != null" >
+        remainder_money,
+      </if>
+      <if test="cost != null" >
+        cost,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="byUserId != null" >
+        by_user_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="trade_in_out != null" >
+        #{tradeInOut,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amnt != null" >
+        #{amnt,jdbcType=DECIMAL},
+      </if>
+      <if test="remainderMoney != null" >
+        #{remainderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null" >
+        #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null" >
+        #{byUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.ExchangeRecord" >
+    update ico_exchange_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="amnt != null" >
+        amnt = #{amnt,jdbcType=DECIMAL},
+      </if>
+      <if test="remainderMoney != null" >
+        remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="cost != null" >
+        cost = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null" >
+        by_user_id = #{byUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.ExchangeRecord" >
+    update ico_exchange_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      amnt = #{amnt,jdbcType=DECIMAL},
+      remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

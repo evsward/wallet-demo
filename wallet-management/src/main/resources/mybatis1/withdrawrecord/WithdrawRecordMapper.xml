@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WithdrawRecordMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		ico_withdraw_record
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		USER_ID,	
+		CODE,	
+		MONEY,	
+		REMAINDER_MONEY,	
+		COST,	
+		STATUS,	
+		CURRENCY,	
+		BANK_CARD_NO,	
+		BANK_CARD_NAME,	
+		ADDRESS,	
+		ORDER_NO,	
+		ORDER_ID,	
+		CREATE_TIME,	
+		UPDATE_TIME,	
+		BY_USER_ID,	
+		FREE,	
+		TX_HASH,	
+		id
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{USER_ID},	
+		#{CODE},	
+		#{MONEY},	
+		#{REMAINDER_MONEY},	
+		#{COST},	
+		#{STATUS},	
+		#{CURRENCY},	
+		#{BANK_CARD_NO},	
+		#{BANK_CARD_NAME},	
+		#{ADDRESS},	
+		#{ORDER_NO},	
+		#{ORDER_ID},	
+		#{CREATE_TIME},	
+		#{UPDATE_TIME},	
+		#{BY_USER_ID},	
+		#{FREE},	
+		#{TX_HASH},	
+		#{id}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		 <trim prefix="set" suffixOverrides=",">
+			<if test="USER_ID!=null">USER_ID = #{USER_ID},</if>
+			<if test="CODE!=null">CODE = #{CODE},</if>
+			<if test="MONEY!=null">MONEY = #{MONEY},</if>
+			<if test="REMAINDER_MONEY!=null">REMAINDER_MONEY = #{REMAINDER_MONEY},</if>
+			<if test="COST!=null">COST = #{COST},</if>
+			<if test="STATUS!=null">STATUS = #{STATUS},</if>
+			<if test="CURRENCY!=null">CURRENCY = #{CURRENCY},</if>
+			<if test="BANK_CARD_NO!=null">BANK_CARD_NO = #{BANK_CARD_NO},</if>
+			<if test="BANK_CARD_NAME!=null">BANK_CARD_NAME = #{BANK_CARD_NAME},</if>
+			<if test="ADDRESS!=null">ADDRESS = #{ADDRESS},</if>
+			<if test="ORDER_NO!=null">ORDER_NO = #{ORDER_NO},</if>
+			<if test="ORDER_ID!=null">ORDER_ID = #{ORDER_ID},</if>
+			<if test="BY_USER_ID!=null">BY_USER_ID = #{BY_USER_ID},</if>
+			<if test="FREE!=null">FREE = #{FREE},</if>
+			<if test="TX_HASH!=null">TX_HASH = #{TX_HASH},</if>
+		 </trim>
+		where 
+		id = #{id}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select i.USER_ID,	
+		i.CODE,	
+		i.MONEY,	
+		i.REMAINDER_MONEY,	
+		i.COST,	
+		i.STATUS,	
+		i.CURRENCY,	
+		i.BANK_CARD_NO,	
+		i.BANK_CARD_NAME,	
+		i.ADDRESS,	
+		i.ORDER_NO,	
+		i.ORDER_ID,	
+		i.CREATE_TIME,	
+		i.UPDATE_TIME,	
+		i.BY_USER_ID,	
+		i.FREE,	
+		i.TX_HASH,	
+		i.id,
+		u.USER_NAME 
+		from ico_withdraw_record i LEFT JOIN users_details u on u.id = i.user_id
+		where 1=1 
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and i.order_no=#{pd.keywords}
+		</if>
+		<if test="pd.STATUS!= null and pd.STATUS != ''"><!-- 关键词检索 -->
+			and  i.STATUS =#{pd.STATUS}
+		</if>
+		 order by  i.update_time desc
+		
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- 列表(全部) -->
+	<select id="listRechargeWithdraw" parameterType="pd" resultType="pd">
+		SELECT
+			sum(money)money,
+			STATUS,
+			currency,
+			#{lastStart} start_time,
+			#{lastEnd} end_time,
+			'提现' type
+		FROM
+			ico_withdraw_record
+		WHERE
+			STATUS IN (2, 3) 
+			<if test="lastStart!= null and lastStart != ''">
+			and update_time>=#{lastStart}
+			</if>
+			<if test="lastEnd!= null and lastEnd != ''">
+			and #{lastEnd}>= update_time
+			</if>
+		GROUP BY
+			STATUS,
+			currency
+		UNION ALL
+			SELECT
+				sum(money)money,
+				STATUS,
+				currency,
+				#{lastStart} start_time,
+				#{lastEnd} end_time,
+				'充值' type
+			FROM
+				ico_recharge_record
+			WHERE
+				STATUS IN (2, 3)
+				<if test="lastStart!= null and lastStart != ''">
+				and update_time>=#{lastStart}
+				</if>
+				<if test="lastEnd!= null and lastEnd != ''">
+				and #{lastEnd}>= update_time
+				</if>
+			GROUP BY
+				STATUS,
+				currency
+	</select>
+	
+	<!-- 查询明细总数 -->
+	<select id="findCountByCoin" parameterType="pd" resultType="pd">
+		select
+			USER_ID 
+		from 
+			user_coin
+		where 1=1 
+		<if test="ADDRESS!= null and ADDRESS != ''">
+		and #{ADDRESS}=ADDRESS
+		</if>
+		<if test="CURRENCY!= null and CURRENCY != ''">
+		and #{CURRENCY} = CURRENCY
+		</if>
+	</select>
+	
+	
+	<!-- 修改 -->
+	<update id="updateWallet" parameterType="pd">
+		update
+		user_wallet
+		 <trim prefix="set" suffixOverrides=",">
+			<if test="BTC_AMNT !=null">BTC_AMNT = BTC_AMNT+#{BTC_AMNT},</if>
+			<if test="LTC_AMNT !=null">LTC_AMNT = LTC_AMNT+#{LTC_AMNT},</if>
+			<if test="ETH_AMNT !=null">ETH_AMNT = ETH_AMNT+#{ETH_AMNT},</if>
+			<if test="ETC_AMNT !=null">ETC_AMNT = ETC_AMNT+#{ETC_AMNT},</if>
+			<if test="SAN_AMNT !=null">SAN_AMNT = SAN_AMNT+#{SAN_AMNT},</if>
+			<if test="OMG_AMNT !=null">OMG_AMNT = OMG_AMNT+#{OMG_AMNT},</if>
+		 </trim>
+		where 
+		user_id = #{USER_ID}
+	</update>
+	
+	
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

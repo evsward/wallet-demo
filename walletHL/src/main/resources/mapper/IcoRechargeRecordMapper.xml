@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.wallet.mapper.IcoRechargeRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.IcoRechargeRecord">
+      <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="user_id" jdbcType="VARCHAR" property="userId" />
+      <result column="code" jdbcType="VARCHAR" property="code" />
+      <result column="money" jdbcType="DECIMAL" property="money" />
+      <result column="remainder_money" jdbcType="DECIMAL" property="remainderMoney" />
+      <result column="cost" jdbcType="DECIMAL" property="cost" />
+      <result column="status" jdbcType="VARCHAR" property="status" />
+      <result column="currency" jdbcType="VARCHAR" property="currency" />
+      <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+      <result column="bank_card_name" jdbcType="VARCHAR" property="bankCardName" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+      <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+      <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="by_user_id" jdbcType="VARCHAR" property="byUserId" />
+      <result column="free" jdbcType="DECIMAL" property="free" />
+      <result column="tx_hash" jdbcType="VARCHAR" property="txHash" />
+      <result column="orddate" javaType="java.lang.String" property="orddate" />
+      <result column="is_concentrate" javaType="java.lang.String" property="isConcentrate" />
+      <result column="concentrate_type" javaType="java.lang.String" property="concentrateType" />
+      <result column="concentrate_msg" javaType="java.lang.String" property="concentrateMsg" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ico_recharge_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.IcoRechargeRecord">
+    insert into ico_recharge_record (id, user_id, code, 
+      money, remainder_money, status, 
+      currency, ordid, orddate, 
+      order_no, create_time, update_time, 
+      by_user_id, free, tx_hash, 
+      address)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{remainderMoney,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=VARCHAR}, #{ordid,jdbcType=VARCHAR}, #{orddate,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{byUserId,jdbcType=VARCHAR}, #{free,jdbcType=DECIMAL}, #{txHash,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.IcoRechargeRecord">
+    update ico_recharge_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      ordid = #{ordid,jdbcType=VARCHAR},
+      orddate = #{orddate,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR},
+      free = #{free,jdbcType=DECIMAL},
+      tx_hash = #{txHash,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      concentrate_type = #{concentrateType,jdbcType=VARCHAR},
+      is_concentrate = #{isConcentrate,jdbcType=VARCHAR},
+      concentrate_msg = #{concentrateMsg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, code, money, remainder_money, status, currency, ordid, orddate, 
+    order_no, create_time, update_time, by_user_id, free, tx_hash, address
+    from ico_recharge_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, code, money, remainder_money, status, currency, ordid, orddate, 
+    order_no, create_time, update_time, by_user_id, free, tx_hash, address
+    from ico_recharge_record
+  </select>
+
+  <select id="getWithRechargeOrder" resultMap="BaseResultMap">
+    select id, user_id, code, money, remainder_money, status, currency, ordid, orddate,
+    order_no, create_time, update_time, by_user_id, free, tx_hash, address
+    from ico_recharge_record where currency ='SAN' and status =3 and is_concentrate=0
+  </select>
+
+  <select id="listRechargeRecordByGather" resultMap="BaseResultMap">
+  	select
+  		id, user_id, code, money, remainder_money, status, currency, ordid, orddate,
+    	order_no, create_time, update_time, by_user_id, free, tx_hash, address
+    from
+    	ico_recharge_record
+    where
+    	currency ='ETH'
+    and
+    	status = 3
+    and
+    	money > 0
+    and
+    	is_concentrate = 0
+  </select>
+  <update id="updateRechargeRecordByID" parameterType="com.ecochain.wallet.entity.IcoRechargeRecord">
+  	update
+  		ico_recharge_record
+  	set
+  		is_concentrate = #{isConcentrate}
+  	where
+  		id = #{id}
+  </update>
+  <select id="getIcoRechargeRecordByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  		id, user_id, code, money, remainder_money, status, currency, ordid, orddate,
+    	order_no, create_time, update_time, by_user_id, free, tx_hash, address
+    from
+    	ico_recharge_record
+    where
+    	currency ='ETH'
+    and
+    	ordid = #{ordid}	
+  </select>
+</mapper>

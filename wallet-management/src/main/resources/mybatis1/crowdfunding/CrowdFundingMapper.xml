@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CrowdFundingMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		pro_crowdfunding
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		COMPANY_NAME,
+		USERID,	
+		PROJECT_NAME,	
+		PROJECT_STAGE,	
+		REAL_NAME,	
+		OFFICE_ADDRESS,	
+		OFFICE_DETAIL,	
+		TEAM_COUNT,	
+		IPO_STAGE,	
+		PROJECT_DESC,	
+		PROJECT_DESC_DETAIL,	
+		PUBLICITY_VIDEO,	
+		COVER_PICTURE,	
+		RICH_TEXT,	
+		INVEST_COIN_TYPE,	
+		INVEST_LIMIT,	
+		INVEST_AMOUNT,	
+		REPAY_DESC,	
+		QUOTA_LIMIT,	
+		SUPPORT_LIMIT,	
+		IS_FREE_DELIVER,	
+		REPAY_PERIOD,	
+		ICO_PERIOD,	
+		TARGET_LIMIT,	
+		TARGET_TYPE,	
+		INVEST_RATE,	
+		INVEST_COUNT,	
+		TARGET_AMOUNT,	
+		CONTACT_NAME,	
+		JOB_POSITION,	
+		CONTACT_TEL,	
+		START_TIME,	
+		END_TIME,	
+		CREATE_TIME,	
+		PROJECT_STATE,	
+		CASE
+		WHEN MIN_INVESTMENT_AMOUNT = 0 THEN
+			0
+		ELSE
+			MIN_INVESTMENT_AMOUNT
+		END MIN_INVESTMENT_AMOUNT,	
+		MAX_INVESTMENT_AMOUNT,	
+		PROJECT_ID,
+		SERVICE_CHARGE,
+		INVEST_ETHTOBTC,
+		INVEST_LTCTOBTC,
+		INVEST_SANTOBTC,
+		INVEST_BTCTOBTC,
+		INVEST_BTC_COUNT,
+		INVEST_ETH_COUNT,
+		INVEST_LTC_COUNT,
+		INVEST_SAN_COUNT,
+		INVEST_NON_COUNT
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{USERID},	
+		#{PROJECT_NAME},	
+		#{PROJECT_STAGE},	
+		#{REAL_NAME},	
+		#{OFFICE_ADDRESS},	
+		#{OFFICE_DETAIL},	
+		#{TEAM_COUNT},	
+		#{IPO_STAGE},	
+		#{PROJECT_DESC},	
+		#{PROJECT_DESC_DETAIL},	
+		#{PUBLICITY_VIDEO},	
+		#{COVER_PICTURE},	
+		#{RICH_TEXT},	
+		#{INVEST_COIN_TYPE},	
+		#{INVEST_LIMIT},	
+		#{INVEST_AMOUNT},	
+		#{REPAY_DESC},	
+		#{QUOTA_LIMIT},	
+		#{SUPPORT_LIMIT},	
+		#{IS_FREE_DELIVER},	
+		#{REPAY_PERIOD},	
+		#{ICO_PERIOD},	
+		#{TARGET_LIMIT},	
+		#{TARGET_TYPE},	
+		#{INVEST_RATE},	
+		#{INVEST_COUNT},	
+		#{TARGET_AMOUNT},	
+		#{CONTACT_NAME},	
+		#{JOB_POSITION},	
+		#{CONTACT_TEL},	
+		#{START_TIME},	
+		#{END_TIME},	
+		#{CREATE_TIME},	
+		#{PROJECT_STATE},	
+		#{MIN_INVESTMENT_AMOUNT},	
+		#{MAX_INVESTMENT_AMOUNT},	
+		#{PROJECT_ID},
+		#{SERVICE_CHARGE}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			PROJECT_ID = #{PROJECT_ID}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		<trim prefix="set" suffixOverrides=",">
+			<if test="USERID!=null">USERID = #{USERID},</if>
+			<if test="PROJECT_NAME!=null">PROJECT_NAME = #{PROJECT_NAME},</if>
+			<if test="PROJECT_STAGE!=null">PROJECT_STAGE = #{PROJECT_STAGE},</if>
+			<if test="REAL_NAME!=null">REAL_NAME = #{REAL_NAME},</if>
+			<if test="OFFICE_ADDRESS!=null">OFFICE_ADDRESS = #{OFFICE_ADDRESS},</if>
+			<if test="OFFICE_DETAIL!=null">OFFICE_DETAIL = #{OFFICE_DETAIL},</if>
+			<if test="TEAM_COUNT!=null">TEAM_COUNT = #{TEAM_COUNT},</if>
+			<if test="IPO_STAGE!=null">IPO_STAGE = #{IPO_STAGE},</if>
+			<if test="PROJECT_DESC!=null">PROJECT_DESC = #{PROJECT_DESC},</if>
+			<if test="PROJECT_DESC_DETAIL!=null">PROJECT_DESC_DETAIL = #{PROJECT_DESC_DETAIL},</if>
+			<if test="PUBLICITY_VIDEO!=null">PUBLICITY_VIDEO = #{PUBLICITY_VIDEO},</if>
+			<if test="COVER_PICTURE!=null">COVER_PICTURE = #{COVER_PICTURE},</if>
+			<if test="RICH_TEXT!=null">RICH_TEXT = #{RICH_TEXT},</if>
+			<if test="INVEST_COIN_TYPE!=null">INVEST_COIN_TYPE = #{INVEST_COIN_TYPE},</if>
+			<if test="INVEST_LIMIT!=null">INVEST_LIMIT = #{INVEST_LIMIT},</if>
+			<if test="INVEST_AMOUNT!=null">INVEST_AMOUNT = #{INVEST_AMOUNT},</if>
+			<if test="REPAY_DESC!=null">REPAY_DESC = #{REPAY_DESC},</if>
+			<if test="QUOTA_LIMIT!=null">QUOTA_LIMIT = #{QUOTA_LIMIT},</if>
+			<if test="SUPPORT_LIMIT!=null">SUPPORT_LIMIT = #{SUPPORT_LIMIT},</if>
+			<if test="IS_FREE_DELIVER!=null">IS_FREE_DELIVER = #{IS_FREE_DELIVER},</if>
+			<if test="REPAY_PERIOD!=null">REPAY_PERIOD = #{REPAY_PERIOD},</if>
+			<if test="ICO_PERIOD!=null">ICO_PERIOD = #{ICO_PERIOD},</if>
+			<if test="TARGET_LIMIT!=null">TARGET_LIMIT = #{TARGET_LIMIT},</if>
+			<if test="TARGET_TYPE!=null">TARGET_TYPE = #{TARGET_TYPE},</if>
+			<if test="INVEST_RATE!=null">INVEST_RATE = #{INVEST_RATE},</if>
+			<if test="INVEST_COUNT!=null">INVEST_COUNT = #{INVEST_COUNT},</if>
+			<if test="TARGET_AMOUNT!=null">TARGET_AMOUNT = #{TARGET_AMOUNT},</if>
+			<if test="CONTACT_NAME!=null">CONTACT_NAME = #{CONTACT_NAME},</if>
+			<if test="JOB_POSITION!=null">JOB_POSITION = #{JOB_POSITION},</if>
+			<if test="CONTACT_TEL!=null">CONTACT_TEL = #{CONTACT_TEL},</if>
+			<if test="START_TIME!=null">START_TIME = #{START_TIME},</if>
+			<if test="END_TIME!=null">END_TIME = #{END_TIME},</if>
+			<if test="CREATE_TIME!=null">CREATE_TIME = #{CREATE_TIME},</if>
+			<if test="PROJECT_STATE!=null">PROJECT_STATE = #{PROJECT_STATE},</if>
+			<if test="MIN_INVESTMENT_AMOUNT!=null">MIN_INVESTMENT_AMOUNT = #{MIN_INVESTMENT_AMOUNT},</if>
+			<if test="MAX_INVESTMENT_AMOUNT!=null">MAX_INVESTMENT_AMOUNT = #{MAX_INVESTMENT_AMOUNT},</if>
+			<if test="SERVICE_CHARGE!=null">SERVICE_CHARGE = #{SERVICE_CHARGE},</if>
+			<if test="INVEST_ETHTOBTC!=null">INVEST_ETHTOBTC = #{INVEST_ETHTOBTC},</if>
+			<if test="INVEST_LTCTOBTC!=null">INVEST_LTCTOBTC = #{INVEST_LTCTOBTC},</if>
+			<if test="INVEST_SANTOBTC!=null">INVEST_SANTOBTC = #{INVEST_SANTOBTC},</if>
+			<if test="INVEST_BTCTOBTC!=null">INVEST_BTCTOBTC = #{INVEST_BTCTOBTC},</if>
+			<if test="INVEST_BTC_COUNT !=null">INVEST_BTC_COUNT = #{INVEST_BTC_COUNT},</if>
+			<if test="INVEST_ETH_COUNT !=null">INVEST_ETH_COUNT = #{INVEST_ETH_COUNT},</if>
+			<if test="INVEST_LTC_COUNT !=null">INVEST_LTC_COUNT = #{INVEST_LTC_COUNT},</if>
+			<if test="INVEST_SAN_COUNT !=null">INVEST_SAN_COUNT = #{INVEST_SAN_COUNT},</if>
+			<if test="INVEST_NON_COUNT !=null">INVEST_NON_COUNT = #{INVEST_NON_COUNT},</if>
+		 </trim>
+		where 
+		PROJECT_ID = #{PROJECT_ID}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			PROJECT_ID = #{PROJECT_ID}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		SELECT
+			pc.max_investment_amount,
+			pc.project_desc,
+			LEFT (pc.start_time, 19) start_time,
+			LEFT (pc.end_time, 19) end_time,
+			pc.project_state PROJECT_STATE,
+			pc.project_id PROJECT_ID,
+			pc.project_name PROJECT_NAME,
+			pc.cover_picture,
+			pc.target_amount,
+			pc.invest_amount,
+			CASE
+		WHEN now() > end_time THEN
+			0
+		ELSE
+			datediff(end_time, start_time)
+		END remaind_days,
+		 invest_count,
+		 ROUND(
+			(invest_count / target_amount),
+			4
+		) * 100 invest_rate
+		FROM
+			pro_crowdfunding pc
+			
+			where 1=1 and project_state !=0 
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and pc.PROJECT_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+		<if test="pd.projectState!= null and pd.projectState != ''"><!-- 关键词检索 -->
+			and  pc.PROJECT_STATE = #{pd.projectState}
+		</if>
+		ORDER BY
+			pc.create_time DESC
+	</select>
+	
+	<!-- 列表 -->
+	<select id="detaillistPage" parameterType="page" resultType="pd">
+		SELECT
+		 psa.project_id,
+		 psa.account,
+		 psa.invest_amount,
+		 pc.target_amount,
+		 dic.code_name pay_type,
+		 psa.invest_rate,
+		 invest_time,
+		 pc.project_name,
+		 pc.cover_picture,
+		 LEFT (pc.create_time, 19) create_time,
+		 pc.project_state,
+		 datediff(end_time, start_time) ico_period
+		FROM
+			pro_support_amount psa,
+			pro_crowdfunding pc,
+			(select code_name,code_value from system_general_code where group_id ='0d3d9c9ead8e4dbdbfcdfc56cba10019')dic
+		WHERE
+			psa.project_id = pc.project_id  and  dic.code_value = psa.pay_type
+			<if test="pd.PROJECT_ID!= null and pd.PROJECT_ID != ''">
+			AND psa.project_id =  #{pd.PROJECT_ID}
+		</if>
+		order by  invest_time desc
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1 
+		<if test=" PROJECT_STATE==4"><!-- 修改状态为4的条件   修改为即将开始状态-->
+			and PROJECT_STATE = 3 and 365>=TIMESTAMPDIFF(DAY,now(),start_time) and TIMESTAMPDIFF(DAY,now(),start_time)>=0
+		</if>
+		<if test=" PROJECT_STATE==5"><!-- 修改状态为5的条件 修改为进行时状态-->
+			and (PROJECT_STATE = 4 or PROJECT_STATE = 3) and  now()>= start_time  and end_time >= now()
+		</if>
+		<if test=" PROJECT_STATE==8"><!-- 修改状态为8的条件 修改已结束未投满状态-->
+			and (PROJECT_STATE = 4 or PROJECT_STATE = 5)  and target_amount >  invest_count and now()>=end_time
+		</if> 
+		<if test=" PROJECT_STATE==6"><!-- 修改状态为6的条件 修改为已经完成状态-->
+			and (PROJECT_STATE = 4 or PROJECT_STATE = 5)  and invest_amount >  target_amount and now()>=end_time
+		</if>
+	</select>
+	
+	
+	<select id="listAmount" parameterType="pd" resultType="pd">
+		SELECT
+			CODE .code_name,
+			amount.pay_type,
+			amount.amount
+		FROM
+			(
+				SELECT
+					pay_type,
+					SUM(invest_amount) amount
+				FROM
+					pro_support_amount
+				WHERE 1=1 
+				<if test="PROJECT_ID!= null and PROJECT_ID != ''">
+					and PROJECT_ID =  #{PROJECT_ID}
+				</if>
+				GROUP BY
+					pay_type
+			) amount
+		LEFT JOIN (
+			SELECT
+				code_value,
+				code_name
+			FROM
+				system_general_code
+			WHERE
+				group_id = '0d3d9c9ead8e4dbdbfcdfc56cba10019'
+		) CODE ON CODE .code_value = amount.pay_type
+			
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			PROJECT_ID in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<select id="findInvestRefund" resultType="pd">
+		SELECT b.support_amount_id,c.user_id,b.invest_amount,b.pay_type
+		FROM pro_crowdfunding a,pro_support_amount b,user_login c
+		where a.project_id=b.project_id and b.account=c.account and a.project_state='8' and b.refund_state!='1'
+	</select>
+
+
+	<update id="updateProSupportAmountRefundState" parameterType="pd">
+		update pro_support_amount set refund_state='1' where refund_state='0' and support_amount_id=#{supportAmountId}
+	</update>
+
+	<update id="updateAdd" parameterType="pd">
+		update user_wallet
+		<set>
+			<if test='amnt != null and payType != null and payType == "1" '>
+				btc_amnt = btc_amnt + #{amnt,jdbcType=DECIMAL} ,
+			</if>
+			<if test='amnt != null and payType != null and payType == "4" '>
+				ltc_amnt = ltc_amnt + #{amnt,jdbcType=DECIMAL} ,
+			</if>
+			<if test='amnt != null and payType != null and payType == "2" '>
+				eth_amnt = eth_amnt + #{amnt,jdbcType=DECIMAL} ,
+			</if>
+			<if test='amnt != null and payType != null and payType == "5" '>
+				san_amnt = san_amnt + #{amnt,jdbcType=DECIMAL} ,
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+
+	<select id="listAttachment" parameterType="pd" resultType="pd">
+		select project_id,type,path  from pro_crowdfunding_attachment
+		where 1=1 and status=1
+		<if test="PROJECT_ID!= null and PROJECT_ID != ''">
+			and project_id =#{PROJECT_ID}
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listCurrency" parameterType="pd" resultType="pd">
+		select alldatas.name ,sum(alldatas.money) money from  (
+		select  'BTC' as name  , SUM(btc_amnt) as money ,create_time from user_wallet 
+		union select  'ETH' as name , SUM(eth_amnt) as money ,create_time from user_wallet
+		union select  'LTC' as name , SUM(ltc_amnt) as money ,create_time from user_wallet
+		union select  'ETC' as name, SUM(etc_amnt) as money ,create_time from user_wallet
+		union select  'HLC' as name, SUM(hlc_amnt) as money ,create_time from user_wallet
+		union 
+		select  case  INVEST_COIN_TYPE
+		when 1 then 'BTC' 
+		when 2 then 'ETH'
+		when 3 then 'LTC'
+		when 4 then 'ETC'
+		when 5 then 'HLC'
+		else '' end  name
+		,sum(invest_amount)money  ,create_time from pro_crowdfunding
+		 where INVEST_COIN_TYPE !=0 
+		and INVEST_COIN_TYPE is not null
+		 GROUP BY INVEST_COIN_TYPE
+		) alldatas   where  1=1
+			<if test="lastStart!= null and lastStart != ''">
+			and create_time>=#{lastStart}
+			</if>
+			<if test="lastEnd!= null and lastEnd != ''">
+			and #{lastEnd}>= create_time
+			</if>
+			<if test="invest_coin_type!= null and invest_coin_type != ''">
+			and name = #{invest_coin_type}
+			</if>
+		group by alldatas.name 
+	</select>
+	
+</mapper>

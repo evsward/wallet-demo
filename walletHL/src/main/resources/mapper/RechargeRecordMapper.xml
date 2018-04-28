@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.wallet.mapper.RechargeRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.RechargeRecord">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="remainder_money" jdbcType="DECIMAL" property="remainderMoney" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="ordid" jdbcType="VARCHAR" property="ordid" />
+    <result column="orddate" jdbcType="VARCHAR" property="orddate" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="by_user_id" jdbcType="VARCHAR" property="byUserId" />
+    <result column="free" jdbcType="DECIMAL" property="free" />
+    <result column="tx_hash" jdbcType="VARCHAR" property="txHash" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, code, money, remainder_money, status, currency, ordid, orddate, order_no, 
+    create_time, update_time, by_user_id, free, tx_hash, address
+  </sql>
+  <select id="selectByExample" parameterType="com.ecochain.wallet.entity.RechargeRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ico_recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ico_recharge_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ico_recharge_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecochain.wallet.entity.RechargeRecordExample">
+    delete from ico_recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.RechargeRecord">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into ico_recharge_record (id, user_id, code, 
+      money, remainder_money, status, 
+      currency, ordid, orddate, 
+      order_no, create_time, update_time, 
+      by_user_id, free, tx_hash, 
+      address)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{remainderMoney,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=VARCHAR}, #{ordid,jdbcType=VARCHAR}, #{orddate,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{byUserId,jdbcType=VARCHAR}, #{free,jdbcType=DECIMAL}, #{txHash,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.RechargeRecord">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into ico_recharge_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="remainderMoney != null">
+        remainder_money,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="currency != null">
+        currency,
+      </if>
+      <if test="ordid != null">
+        ordid,
+      </if>
+      <if test="orddate != null">
+        orddate,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="byUserId != null">
+        by_user_id,
+      </if>
+      <if test="free != null">
+        free,
+      </if>
+      <if test="txHash != null">
+        tx_hash,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=VARCHAR},
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="remainderMoney != null">
+        #{remainderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="ordid != null">
+        #{ordid,jdbcType=VARCHAR},
+      </if>
+      <if test="orddate != null">
+        #{orddate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null">
+        #{byUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="free != null">
+        #{free,jdbcType=DECIMAL},
+      </if>
+      <if test="txHash != null">
+        #{txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecochain.wallet.entity.RechargeRecordExample" resultType="java.lang.Long">
+    select count(*) from ico_recharge_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ico_recharge_record
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remainderMoney != null">
+        remainder_money = #{record.remainderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currency != null">
+        currency = #{record.currency,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ordid != null">
+        ordid = #{record.ordid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orddate != null">
+        orddate = #{record.orddate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null">
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.byUserId != null">
+        by_user_id = #{record.byUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.free != null">
+        free = #{record.free,jdbcType=DECIMAL},
+      </if>
+      <if test="record.txHash != null">
+        tx_hash = #{record.txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ico_recharge_record
+    set id = #{record.id,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      money = #{record.money,jdbcType=DECIMAL},
+      remainder_money = #{record.remainderMoney,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=VARCHAR},
+      currency = #{record.currency,jdbcType=VARCHAR},
+      ordid = #{record.ordid,jdbcType=VARCHAR},
+      orddate = #{record.orddate,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{record.byUserId,jdbcType=VARCHAR},
+      free = #{record.free,jdbcType=DECIMAL},
+      tx_hash = #{record.txHash,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.RechargeRecord">
+    update ico_recharge_record
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="remainderMoney != null">
+        remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="ordid != null">
+        ordid = #{ordid,jdbcType=VARCHAR},
+      </if>
+      <if test="orddate != null">
+        orddate = #{orddate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null">
+        by_user_id = #{byUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="free != null">
+        free = #{free,jdbcType=DECIMAL},
+      </if>
+      <if test="txHash != null">
+        tx_hash = #{txHash,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.RechargeRecord">
+    update ico_recharge_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      ordid = #{ordid,jdbcType=VARCHAR},
+      orddate = #{orddate,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR},
+      free = #{free,jdbcType=DECIMAL},
+      tx_hash = #{txHash,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findRechargeRecordByTxHash" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *  from ico_recharge_record where tx_hash = #{txHash,jdbcType=VARCHAR}
+  </select>
+  <update id="updateRechargeRecordByTxHash" parameterType="com.ecochain.wallet.entity.RechargeRecord">
+	  update ico_recharge_record
+	    set 
+	      status = #{status,jdbcType=VARCHAR},
+	      update_time = #{updateTime,jdbcType=TIMESTAMP}
+	    where  tx_hash = #{txHash,jdbcType=VARCHAR}
+  </update>
+</mapper>

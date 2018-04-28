@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.UserBankMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.UserBank" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="is_default" property="isDefault" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, bank_no, bank_name, icon, is_default, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_bank
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_bank
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.UserBank" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into user_bank (id, user_id, bank_no, 
+      bank_name, icon, is_default, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{bankNo,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{isDefault,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.UserBank" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into user_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="bankNo != null" >
+        bank_no,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bankNo != null" >
+        #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.UserBank" >
+    update user_bank
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bankNo != null" >
+        bank_no = #{bankNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.UserBank" >
+    update user_bank
+    set user_id = #{userId,jdbcType=INTEGER},
+      bank_no = #{bankNo,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getBankList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id,bank_name,right(bank_no,4)bank_no,icon,is_default from user_bank where user_id = #{userId}
+  </select>
+  <update id="setDefault" parameterType="map">
+        update user_bank set is_default = 1 where user_id = #{userId} and id = #{id}
+  </update>
+  <update id="cancelDefault" parameterType="java.lang.String">
+        update user_bank set is_default = 0 where user_id = #{userId}
+  </update>
+  <select id="isExist" parameterType="map" resultType="java.lang.String">
+    select count(1) from user_bank where bank_no = #{bankNo} and user_id = #{userId}
+  </select>
+</mapper>

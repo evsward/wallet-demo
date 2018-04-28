@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UsersDetailsMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		USERS_DETAILS
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		id,
+		USER_IMG,	
+		ID_CARD,	
+		EMAIL,	
+		PUBLIC_KEY,	
+		PROVINCE,	
+		ADDRESS,	
+		ADDRESS_MSG,	
+		SEX,	
+		SEEDS,	
+		USER_NAME,	
+		USER_TYPE,	
+		REG_TIME,	
+		PARENT_USERCODE,	
+		USERCODE,	
+		ALIAS,	
+		MOBILE_PHONE,	
+		RCODE,	
+		IDNO,	
+		TRANS_PASSWORD,	
+		PAY_RCODE,	
+		REMARK1,	
+		REMARK2,	
+		REMARK3,	
+		REMARK4,	
+		REMARK5
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{USER_IMG},	
+		#{ID_CARD},	
+		#{EMAIL},	
+		#{PUBLIC_KEY},	
+		#{PROVINCE},	
+		#{ADDRESS},	
+		#{ADDRESS_MSG},	
+		#{SEX},	
+		#{SEEDS},	
+		#{USER_NAME},	
+		#{USER_TYPE},	
+		#{REG_TIME},	
+		#{PARENT_USERCODE},	
+		#{USERCODE},	
+		#{ALIAS},	
+		#{MOBILE_PHONE},	
+		#{RCODE},	
+		#{IDNO},	
+		#{TRANS_PASSWORD},	
+		#{PAY_RCODE},	
+		#{REMARK1},	
+		#{REMARK2},	
+		#{REMARK3},	
+		#{REMARK4},	
+		#{REMARK5}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" keyProperty="id" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+			USER_IMG,	
+			ID_CARD,	
+			EMAIL,	
+			PUBLIC_KEY,	
+			PROVINCE,	
+			ADDRESS,	
+			ADDRESS_MSG,	
+			SEX,	
+			SEEDS,	
+			USER_NAME,	
+			USER_TYPE,	
+			REG_TIME,	
+			PARENT_USERCODE,	
+			USERCODE,	
+			ALIAS,	
+			MOBILE_PHONE,	
+			RCODE,	
+			IDNO,	
+			TRANS_PASSWORD,	
+			PAY_RCODE,	
+			REMARK1,	
+			REMARK2,	
+			REMARK3,	
+			REMARK4,	
+			REMARK5
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		 <trim prefix="set" suffixOverrides=",">
+					<if test="USER_IMG!=null">USER_IMG = #{USER_IMG},</if>
+					<if test="ID_CARD!=null">ID_CARD = #{ID_CARD},</if>
+					<if test="EMAIL!=null">EMAIL = #{EMAIL},</if>
+					<if test="PUBLIC_KEY!=null">PUBLIC_KEY = #{PUBLIC_KEY},</if>
+					<if test="PROVINCE!=null">PROVINCE = #{PROVINCE},</if>
+					<if test="ADDRESS!=null">ADDRESS = #{ADDRESS},</if>
+					<if test="ADDRESS_MSG!=null">ADDRESS_MSG = #{ADDRESS_MSG},</if>
+					<if test="SEX!=null">SEX = #{SEX},</if>
+					<if test="SEEDS!=null">SEEDS = #{SEEDS},</if>
+					<if test="USER_NAME!=null">USER_NAME = #{USER_NAME},</if>
+					<if test="USER_TYPE!=null">USER_TYPE = #{USER_TYPE},</if>
+					<if test="REG_TIME!=null">REG_TIME = #{REG_TIME},</if>
+					<if test="PARENT_USERCODE!=null">PARENT_USERCODE = #{PARENT_USERCODE},</if>
+					<if test="USERCODE!=null">USERCODE = #{USERCODE},</if>
+					<if test="ALIAS!=null">ALIAS = #{ALIAS},</if>
+					<if test="MOBILE_PHONE!=null">MOBILE_PHONE = #{MOBILE_PHONE},</if>
+					<if test="RCODE!=null">RCODE = #{RCODE},</if>
+					<if test="IDNO!=null">IDNO = #{IDNO},</if>
+					<if test="TRANS_PASSWORD!=null">TRANS_PASSWORD = #{TRANS_PASSWORD},</if>
+					<if test="PAY_RCODE!=null">PAY_RCODE = #{PAY_RCODE},</if>
+					<if test="REMARK1!=null">REMARK1 = #{REMARK1},</if>
+					<if test="REMARK2!=null">REMARK2 = #{REMARK2},</if>
+					<if test="REMARK3!=null">REMARK3 = #{REMARK3},</if>
+					<if test="REMARK4!=null">REMARK4 = #{REMARK4},</if>
+					<if test="REMARK5!=null">REMARK5 = #{REMARK5},</if>
+		 </trim>
+		where 
+		id = #{id}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		SELECT
+			a.id,
+			a.USER_IMG,
+			a.ID_CARD,
+			a.EMAIL,
+			a.PUBLIC_KEY,
+			a.PROVINCE,
+			a.ADDRESS,
+			a.ADDRESS_MSG,
+			a.SEX,
+			a.SEEDS,
+			a.USER_NAME,
+			a.USER_TYPE,
+			a.REG_TIME,
+			a.PARENT_USERCODE,
+			a.USERCODE,
+			a.ALIAS,
+			a.MOBILE_PHONE,
+			a.RCODE,
+			a.IDNO,
+			a.TRANS_PASSWORD,
+			a.PAY_RCODE,
+			a.id,
+			b.ACCOUNT,
+			b. PASSWORD
+		FROM
+			users_details a,
+			user_login b
+		WHERE
+			a.id = b.user_id
+		AND
+			a.id = #{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and USER_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+		</if>
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

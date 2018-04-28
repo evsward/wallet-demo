@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.wallet.mapper.UserWalletMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.UserWallet">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="btc_amnt" jdbcType="DECIMAL" property="btcAmnt" />
+    <result column="ltc_amnt" jdbcType="DECIMAL" property="ltcAmnt" />
+    <result column="eth_amnt" jdbcType="DECIMAL" property="ethAmnt" />
+    <result column="etc_amnt" jdbcType="DECIMAL" property="etcAmnt" />
+    <result column="hlc_amnt" jdbcType="DECIMAL" property="hlcAmnt" />
+    <result column="san_amnt" jdbcType="DECIMAL" property="sanAmnt" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="last_caldate" jdbcType="TIMESTAMP" property="lastCaldate" />
+    <result column="syscode" jdbcType="VARCHAR" property="syscode" />
+    <result column="froze_rmb_amnt" jdbcType="DECIMAL" property="frozeRmbAmnt" />
+    <result column="froze_hlc_amnt" jdbcType="DECIMAL" property="frozeHlcAmnt" />
+    <result column="froze_btc_amnt" jdbcType="DECIMAL" property="frozeBtcAmnt" />
+    <result column="froze_ltc_amnt" jdbcType="DECIMAL" property="frozeLtcAmnt" />
+    <result column="froze_eth_amnt" jdbcType="DECIMAL" property="frozeEthAmnt" />
+    <result column="froze_etc_amnt" jdbcType="DECIMAL" property="frozeEtcAmnt" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="version_id" jdbcType="VARCHAR" property="versionId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, btc_amnt, ltc_amnt, eth_amnt, etc_amnt, hlc_amnt, money, last_caldate, 
+    syscode, froze_rmb_amnt, froze_hlc_amnt, froze_btc_amnt, froze_ltc_amnt, froze_eth_amnt, 
+    froze_etc_amnt, create_time, modify_time, operator, version_id
+  </sql>
+  <select id="selectByExample" parameterType="com.ecochain.wallet.entity.UserWalletExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_wallet
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_wallet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_wallet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ecochain.wallet.entity.UserWalletExample">
+    delete from user_wallet
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ecochain.wallet.entity.UserWallet" useGeneratedKeys="true">
+    insert into user_wallet (user_id, btc_amnt, ltc_amnt, 
+      eth_amnt, etc_amnt, hlc_amnt, 
+      money, last_caldate, syscode, 
+      froze_rmb_amnt, froze_hlc_amnt, froze_btc_amnt, 
+      froze_ltc_amnt, froze_eth_amnt, froze_etc_amnt, 
+      create_time, modify_time, operator, 
+      version_id)
+    values (#{userId,jdbcType=INTEGER}, #{btcAmnt,jdbcType=DECIMAL}, #{ltcAmnt,jdbcType=DECIMAL}, 
+      #{ethAmnt,jdbcType=DECIMAL}, #{etcAmnt,jdbcType=DECIMAL}, #{hlcAmnt,jdbcType=DECIMAL}, 
+      #{money,jdbcType=DECIMAL}, #{lastCaldate,jdbcType=TIMESTAMP}, #{syscode,jdbcType=VARCHAR}, 
+      #{frozeRmbAmnt,jdbcType=DECIMAL}, #{frozeHlcAmnt,jdbcType=DECIMAL}, #{frozeBtcAmnt,jdbcType=DECIMAL}, 
+      #{frozeLtcAmnt,jdbcType=DECIMAL}, #{frozeEthAmnt,jdbcType=DECIMAL}, #{frozeEtcAmnt,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, 
+      #{versionId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ecochain.wallet.entity.UserWallet" useGeneratedKeys="true">
+    insert into user_wallet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="btcAmnt != null">
+        btc_amnt,
+      </if>
+      <if test="ltcAmnt != null">
+        ltc_amnt,
+      </if>
+      <if test="ethAmnt != null">
+        eth_amnt,
+      </if>
+      <if test="etcAmnt != null">
+        etc_amnt,
+      </if>
+      <if test="hlcAmnt != null">
+        hlc_amnt,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="lastCaldate != null">
+        last_caldate,
+      </if>
+      <if test="syscode != null">
+        syscode,
+      </if>
+      <if test="frozeRmbAmnt != null">
+        froze_rmb_amnt,
+      </if>
+      <if test="frozeHlcAmnt != null">
+        froze_hlc_amnt,
+      </if>
+      <if test="frozeBtcAmnt != null">
+        froze_btc_amnt,
+      </if>
+      <if test="frozeLtcAmnt != null">
+        froze_ltc_amnt,
+      </if>
+      <if test="frozeEthAmnt != null">
+        froze_eth_amnt,
+      </if>
+      <if test="frozeEtcAmnt != null">
+        froze_etc_amnt,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="versionId != null">
+        version_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="btcAmnt != null">
+        #{btcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ltcAmnt != null">
+        #{ltcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ethAmnt != null">
+        #{ethAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="etcAmnt != null">
+        #{etcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="hlcAmnt != null">
+        #{hlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="lastCaldate != null">
+        #{lastCaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscode != null">
+        #{syscode,jdbcType=VARCHAR},
+      </if>
+      <if test="frozeRmbAmnt != null">
+        #{frozeRmbAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeHlcAmnt != null">
+        #{frozeHlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeBtcAmnt != null">
+        #{frozeBtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeLtcAmnt != null">
+        #{frozeLtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEthAmnt != null">
+        #{frozeEthAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEtcAmnt != null">
+        #{frozeEtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="versionId != null">
+        #{versionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ecochain.wallet.entity.UserWalletExample" resultType="java.lang.Long">
+    select count(*) from user_wallet
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_wallet
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.btcAmnt != null">
+        btc_amnt = #{record.btcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ltcAmnt != null">
+        ltc_amnt = #{record.ltcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ethAmnt != null">
+        eth_amnt = #{record.ethAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.etcAmnt != null">
+        etc_amnt = #{record.etcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hlcAmnt != null">
+        hlc_amnt = #{record.hlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.money != null">
+        money = #{record.money,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lastCaldate != null">
+        last_caldate = #{record.lastCaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.syscode != null">
+        syscode = #{record.syscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frozeRmbAmnt != null">
+        froze_rmb_amnt = #{record.frozeRmbAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.frozeHlcAmnt != null">
+        froze_hlc_amnt = #{record.frozeHlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.frozeBtcAmnt != null">
+        froze_btc_amnt = #{record.frozeBtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.frozeLtcAmnt != null">
+        froze_ltc_amnt = #{record.frozeLtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.frozeEthAmnt != null">
+        froze_eth_amnt = #{record.frozeEthAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.frozeEtcAmnt != null">
+        froze_etc_amnt = #{record.frozeEtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyTime != null">
+        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operator != null">
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.versionId != null">
+        version_id = #{record.versionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_wallet
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      btc_amnt = #{record.btcAmnt,jdbcType=DECIMAL},
+      ltc_amnt = #{record.ltcAmnt,jdbcType=DECIMAL},
+      eth_amnt = #{record.ethAmnt,jdbcType=DECIMAL},
+      etc_amnt = #{record.etcAmnt,jdbcType=DECIMAL},
+      hlc_amnt = #{record.hlcAmnt,jdbcType=DECIMAL},
+      money = #{record.money,jdbcType=DECIMAL},
+      last_caldate = #{record.lastCaldate,jdbcType=TIMESTAMP},
+      syscode = #{record.syscode,jdbcType=VARCHAR},
+      froze_rmb_amnt = #{record.frozeRmbAmnt,jdbcType=DECIMAL},
+      froze_hlc_amnt = #{record.frozeHlcAmnt,jdbcType=DECIMAL},
+      froze_btc_amnt = #{record.frozeBtcAmnt,jdbcType=DECIMAL},
+      froze_ltc_amnt = #{record.frozeLtcAmnt,jdbcType=DECIMAL},
+      froze_eth_amnt = #{record.frozeEthAmnt,jdbcType=DECIMAL},
+      froze_etc_amnt = #{record.frozeEtcAmnt,jdbcType=DECIMAL},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      version_id = #{record.versionId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.UserWallet">
+    update user_wallet
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="btcAmnt != null">
+        btc_amnt = #{btcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ltcAmnt != null">
+        ltc_amnt = #{ltcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ethAmnt != null">
+        eth_amnt = #{ethAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="etcAmnt != null">
+        etc_amnt = #{etcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="hlcAmnt != null">
+        hlc_amnt = #{hlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="lastCaldate != null">
+        last_caldate = #{lastCaldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscode != null">
+        syscode = #{syscode,jdbcType=VARCHAR},
+      </if>
+      <if test="frozeRmbAmnt != null">
+        froze_rmb_amnt = #{frozeRmbAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeHlcAmnt != null">
+        froze_hlc_amnt = #{frozeHlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeBtcAmnt != null">
+        froze_btc_amnt = #{frozeBtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeLtcAmnt != null">
+        froze_ltc_amnt = #{frozeLtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEthAmnt != null">
+        froze_eth_amnt = #{frozeEthAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEtcAmnt != null">
+        froze_etc_amnt = #{frozeEtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="versionId != null">
+        version_id = #{versionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.UserWallet">
+    update user_wallet
+    set user_id = #{userId,jdbcType=INTEGER},
+      btc_amnt = #{btcAmnt,jdbcType=DECIMAL},
+      ltc_amnt = #{ltcAmnt,jdbcType=DECIMAL},
+      eth_amnt = #{ethAmnt,jdbcType=DECIMAL},
+      etc_amnt = #{etcAmnt,jdbcType=DECIMAL},
+      hlc_amnt = #{hlcAmnt,jdbcType=DECIMAL},
+      money = #{money,jdbcType=DECIMAL},
+      last_caldate = #{lastCaldate,jdbcType=TIMESTAMP},
+      syscode = #{syscode,jdbcType=VARCHAR},
+      froze_rmb_amnt = #{frozeRmbAmnt,jdbcType=DECIMAL},
+      froze_hlc_amnt = #{frozeHlcAmnt,jdbcType=DECIMAL},
+      froze_btc_amnt = #{frozeBtcAmnt,jdbcType=DECIMAL},
+      froze_ltc_amnt = #{frozeLtcAmnt,jdbcType=DECIMAL},
+      froze_eth_amnt = #{frozeEthAmnt,jdbcType=DECIMAL},
+      froze_etc_amnt = #{frozeEtcAmnt,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=VARCHAR},
+      version_id = #{versionId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getWalletByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <!-- select  user_id,btc_amnt,ltc_amnt,ROUND(money,2)money,eth_amnt,etc_amnt,hlc_amnt,
+            last_caldate,froze_rmb_amnt,froze_btc_amnt,froze_ltc_amnt ,froze_eth_amnt,froze_etc_amnt,froze_hlc_amnt
+    from user_wallet 
+    where user_id = #{userId} -->
+    
+    select  user_id,truncate(btc_amnt,4)btc_amnt,truncate(ltc_amnt,4)ltc_amnt,ROUND(money,2)money,
+            truncate(eth_amnt,4)eth_amnt,truncate(etc_amnt,4)etc_amnt,truncate(hlc_amnt,4)hlc_amnt,truncate(san_amnt,4)san_amnt,
+            last_caldate,ROUND(froze_rmb_amnt,2)froze_rmb_amnt,truncate(froze_btc_amnt,4)froze_btc_amnt,
+            truncate(froze_ltc_amnt,4)froze_ltc_amnt ,truncate(froze_eth_amnt,4)froze_eth_amnt,
+            truncate(froze_etc_amnt,4)froze_etc_amnt,truncate(froze_hlc_amnt,4)froze_hlc_amnt
+    from user_wallet
+    where user_id = #{user_id}
+    
+  </select>
+  
+  <select id="getWalletByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <!-- select  user_id,btc_amnt,ltc_amnt,ROUND(money,2)money,eth_amnt,etc_amnt,hlc_amnt,
+            last_caldate,froze_rmb_amnt,froze_btc_amnt,froze_ltc_amnt ,froze_eth_amnt,froze_etc_amnt,froze_hlc_amnt
+    from user_wallet 
+    where user_name = #{userName} -->
+    
+    select  user_id,truncate(btc_amnt,4)btc_amnt,truncate(ltc_amnt,4)ltc_amnt,ROUND(money,2)money,
+            truncate(eth_amnt,4)eth_amnt,truncate(etc_amnt,4)etc_amnt,truncate(hlc_amnt,4)hlc_amnt,
+            last_caldate,ROUND(froze_rmb_amnt,2)froze_rmb_amnt,truncate(froze_btc_amnt,4)froze_btc_amnt,
+            truncate(froze_ltc_amnt,4)froze_ltc_amnt ,truncate(froze_eth_amnt,4)froze_eth_amnt,
+            truncate(froze_etc_amnt,4)froze_etc_amnt,truncate(froze_hlc_amnt,4)froze_hlc_amnt
+    from user_wallet 
+    where user_name = #{userName}
+  </select>
+  
+  <update id="updateSub" parameterType="com.ecochain.wallet.entity.UserWallet">
+         update user_wallet
+    <set>
+      <if test="btcAmnt != null">
+        btc_amnt = btc_amnt - #{btcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ltcAmnt != null">
+        ltc_amnt = ltc_amnt - #{ltcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ethAmnt != null">
+        eth_amnt = eth_amnt - #{ethAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="etcAmnt != null">
+        etc_amnt = etc_amnt - #{etcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="hlcAmnt != null">
+        hlc_amnt = hlc_amnt - #{hlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="sanAmnt != null">
+        san_amnt = san_amnt - #{sanAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        money = money - #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeRmbAmnt != null">
+        froze_rmb_amnt = froze_rmb_amnt - #{frozeRmbAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeHlcAmnt != null">
+        froze_hlc_amnt = froze_hlc_amnt - #{frozeHlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeBtcAmnt != null">
+        froze_btc_amnt = froze_btc_amnt - #{frozeBtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeLtcAmnt != null">
+        froze_ltc_amnt = froze_ltc_amnt - #{frozeLtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEthAmnt != null">
+        froze_eth_amnt = froze_eth_amnt - #{frozeEthAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEtcAmnt != null">
+        froze_etc_amnt = froze_etc_amnt - #{frozeEtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 1 = 1
+    and user_id = #{userId}
+    <if test="btcAmnt != null">
+       and btc_amnt &gt;= #{btcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="ltcAmnt != null">
+       and ltc_amnt &gt;= #{ltcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="ethAmnt != null">
+       and eth_amnt &gt;= #{ethAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="etcAmnt != null">
+       and etc_amnt &gt;= #{etcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="hlcAmnt != null">
+       and hlc_amnt &gt;= #{hlcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="money != null">
+       and money &gt;= #{money,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeRmbAmnt != null">
+       and froze_rmb_amnt &gt;= #{frozeRmbAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeHlcAmnt != null">
+       and froze_hlc_amnt &gt;= #{frozeHlcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeBtcAmnt != null">
+       and froze_btc_amnt &gt;= #{frozeBtcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeLtcAmnt != null">
+       and froze_ltc_amnt &gt;= #{frozeLtcAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeEthAmnt != null">
+       and froze_eth_amnt &gt;= #{frozeEthAmnt,jdbcType=DECIMAL}
+     </if>
+     <if test="frozeEtcAmnt != null">
+       and froze_etc_amnt &gt;= #{frozeEtcAmnt,jdbcType=DECIMAL}
+     </if>
+  </update>
+  <update id="updateAdd" parameterType="com.ecochain.wallet.entity.UserWallet">
+         update user_wallet
+    <set>
+      <if test="btcAmnt != null">
+        btc_amnt = btc_amnt + #{btcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ltcAmnt != null">
+        ltc_amnt = ltc_amnt + #{ltcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="ethAmnt != null">
+        eth_amnt = eth_amnt + #{ethAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="etcAmnt != null">
+        etc_amnt = etc_amnt + #{etcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="hlcAmnt != null">
+        hlc_amnt = hlc_amnt + #{hlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="sanAmnt != null">
+        san_amnt = san_amnt + #{sanAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="money != null">
+        money = money + #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeRmbAmnt != null">
+        froze_rmb_amnt = froze_rmb_amnt + #{frozeRmbAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeHlcAmnt != null">
+        froze_hlc_amnt = froze_hlc_amnt + #{frozeHlcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeBtcAmnt != null">
+        froze_btc_amnt = froze_btc_amnt + #{frozeBtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeLtcAmnt != null">
+        froze_ltc_amnt = froze_ltc_amnt + #{frozeLtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEthAmnt != null">
+        froze_eth_amnt = froze_eth_amnt + #{frozeEthAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="frozeEtcAmnt != null">
+        froze_etc_amnt = froze_etc_amnt + #{frozeEtcAmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId}
+  </update>
+  
+  <update id="exchangeRMB2Coin" parameterType="map">
+    update user_wallet 
+    <set>
+        <if test="currency != null and currency == 'BTC'">
+            btc_amnt = btc_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'LTC'">
+            ltc_amnt = ltc_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'ETH'">
+            eth_amnt = eth_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'SAN'">
+            san_amnt = san_amnt + #{amnt} ,
+        </if>
+        money = money - #{rmbAmnt}
+    </set>
+    where 1=1
+    and user_id = #{userId}
+    and money &gt;= #{rmbAmnt} 
+  </update>
+  <update id="exchangeCoin2RMB" parameterType="map">
+    update user_wallet 
+    <set>
+        <if test="currency != null and currency == 'BTC'">
+            btc_amnt = btc_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'LTC'">
+            ltc_amnt = ltc_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'ETH'">
+            eth_amnt = eth_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'SAN'">
+            san_amnt = san_amnt - #{amnt} ,
+        </if>
+            money = money + #{rmbAmnt}
+    </set>
+    where 1=1
+    and user_id = #{userId}
+    <if test="currency != null and currency == 'BTC'">
+        and btc_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'LTC'">
+        and ltc_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'ETH'">
+        and eth_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'SAN'">
+        and san_amnt &gt;= #{amnt} 
+    </if>
+  </update>
+  
+  <!--公司主账号资金变动 -->
+  <update id="companySubCoin" parameterType="map">
+    update user_wallet 
+    <set>
+        <if test="currency != null and currency == 'BTC'">
+            btc_amnt = btc_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'LTC'">
+            ltc_amnt = ltc_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'ETH'">
+            eth_amnt = eth_amnt - #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'SAN'">
+            san_amnt = san_amnt - #{amnt} ,
+        </if>
+            money = money + #{rmbAmnt}
+    </set>
+    where 1=1
+    and user_id = '1'
+    <if test="currency != null and currency == 'BTC'">
+        and btc_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'LTC'">
+        and ltc_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'ETH'">
+        and eth_amnt &gt;= #{amnt} 
+    </if>
+    <if test="currency != null and currency == 'SAN'">
+        and san_amnt &gt;= #{amnt} 
+    </if>
+  </update>
+  <update id="companyAddCoin" parameterType="map">
+    update user_wallet 
+    <set>
+        <if test="currency != null and currency == 'BTC'">
+            btc_amnt = btc_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'LTC'">
+            ltc_amnt = ltc_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'ETH'">
+            eth_amnt = eth_amnt + #{amnt} ,
+        </if>
+        <if test="currency != null and currency == 'SAN'">
+            san_amnt = san_amnt + #{amnt} ,
+        </if>
+            money = money - #{rmbAmnt}
+    </set>
+    where 1=1
+    and user_id = '1'
+    and money &gt;= #{rmbAmnt} 
+  </update>
+
+  <update id="innerTransferSan" parameterType="com.ecochain.wallet.entity.IcoWithdrawRecord">
+    update user_wallet set san_amnt=san_amnt+#{money} where user_id=#{userId}
+  </update>
+
+
+
+  <update id="updateSanAmount" parameterType="map">
+    update user_wallet set san_amnt =san_amnt-#{realAmount} where user_id=#{user_id}
+  </update>
+
+  <select id="getAddressAndBalance" parameterType="java.lang.String" resultType="map">
+        select uc.user_id,currency,address,uw.btc_amnt,ltc_amnt,eth_amnt,san_amnt,money,froze_btc_amnt,froze_etc_amnt,froze_ltc_amnt,froze_san_amnt,froze_rmb_amnt
+          from user_coin uc,user_wallet uw where uc.user_id=uw.user_id and uc.user_id=#{userId}
+  </select>
+</mapper>

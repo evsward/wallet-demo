@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.SystemSendVcodeMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.SystemSendVcode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="vcode" property="vcode" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, vcode, send_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system_send_vcode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system_send_vcode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.SystemSendVcode" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into system_send_vcode (id, phone, vcode, 
+      send_time)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{vcode,jdbcType=VARCHAR}, 
+      #{sendTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.SystemSendVcode" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into system_send_vcode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="vcode != null" >
+        vcode,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="vcode != null" >
+        #{vcode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.SystemSendVcode" >
+    update system_send_vcode
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="vcode != null" >
+        vcode = #{vcode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.SystemSendVcode" >
+    update system_send_vcode
+    set phone = #{phone,jdbcType=VARCHAR},
+      vcode = #{vcode,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findVcodeByPhone" parameterType="java.lang.String" resultType="java.lang.String" >
+        select vcode 
+        from system_send_vcode  where phone = #{phone} order by send_time desc 
+        LIMIT 0,1
+  </select> 
+     
+  <!--查询30分钟内是否有发送验证码 -->
+     <select id="isSendBy30Minute" parameterType="java.lang.String" resultType="java.lang.Integer" >
+        select count(1) cnt
+        from system_send_vcode  where phone = #{phone} 
+        and send_time > DATE_ADD(NOW(),INTERVAL -30  MINUTE)
+    </select> 
+    <!--查询30分钟之内发送验证码次数 -->
+    <select id="findCountBy30Minute" parameterType="java.lang.String" resultType="java.lang.Integer" >
+        select count(1)
+        from system_send_vcode  
+        where 1=1
+        and phone = #{phone}
+        and send_time between date_sub(now(),interval 30 minute) and now()
+    </select> 
+    <select id="smsCountIsOver" parameterType="map" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM
+            system_send_vcode
+        WHERE 1=1
+        and    phone = #{phone} and date(send_time) = date(now()) 
+        <!-- and (
+                (
+                    SELECT
+                        count(1)
+                    FROM
+                        system_send_vcode
+                    WHERE
+                        phone = #{phone} 
+                    AND send_time > DATE_ADD(NOW(), INTERVAL - 30 MINUTE)
+                )&gt;=10
+                OR  
+                (
+                    SELECT
+                        count(1)
+                    FROM
+                        system_send_vcode
+                    WHERE
+                        1 = 1
+                    AND phone = #{phone}
+                    AND date(send_time) = date(now())
+                )&gt;=15
+        ) -->
+        and (
+            SELECT
+                count(1)
+            FROM
+                system_send_vcode
+            WHERE
+                1 = 1
+            AND phone = #{phone}
+            AND date(send_time) = date(now())
+        )&gt;= #{sms_day_num}
+    </select>
+    
+    <insert id="addVcode" parameterType="com.ecochain.wallet.entity.SystemSendVcode" >
+         insert into system_send_vcode (phone,vcode,send_time) values (#{phone},#{vcode},now())  
+     </insert>
+     
+     <!--查询当天发送验证码次数 -->
+    <select id="findCountByDay" parameterType="java.lang.String" resultType="java.lang.Integer" >
+        select count(1)
+        from system_send_vcode  
+        where 1=1
+        and phone = #{phone}
+        and date(send_time) = date(now())
+    </select> 
+</mapper>

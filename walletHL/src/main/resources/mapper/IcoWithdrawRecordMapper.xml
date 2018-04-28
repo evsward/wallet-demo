@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecochain.wallet.mapper.IcoWithdrawRecordMapper">
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.IcoWithdrawRecord">
+    <constructor>
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="remainder_money" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="cost" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="currency" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="bank_card_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="bank_card_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="by_user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="free" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="tx_hash" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ico_withdraw_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.IcoWithdrawRecord">
+    insert into ico_withdraw_record (id, user_id, code, 
+      money, remainder_money, cost, 
+      status, currency, bank_card_no, 
+      bank_card_name, address, order_no, 
+      order_id, create_time, update_time, 
+      by_user_id, free, tx_hash
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{remainderMoney,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{bankCardNo,jdbcType=VARCHAR}, 
+      #{bankCardName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{byUserId,jdbcType=VARCHAR}, #{free,jdbcType=DECIMAL}, #{txHash,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.IcoWithdrawRecord">
+    update ico_withdraw_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      remainder_money = #{remainderMoney,jdbcType=DECIMAL},
+      cost = #{cost,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR},
+      free = #{free,jdbcType=DECIMAL},
+      tx_hash = #{txHash,jdbcType=VARCHAR},
+      tx_hash_bak = #{txHashBak,jdbcType=VARCHAR},
+      withdraw_msg = #{withdrawMsg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, code, money, remainder_money, cost, status, currency, bank_card_no, 
+    bank_card_name, address, order_no, order_id, create_time, update_time, by_user_id, 
+    free, tx_hash
+    from ico_withdraw_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, code, money, remainder_money, cost, status, currency, bank_card_no, 
+    bank_card_name, address, order_no, order_id, create_time, update_time, by_user_id, 
+    free, tx_hash
+    from ico_withdraw_record
+  </select>
+
+  <select id="getWithDrawOrder" resultMap="BaseResultMap" parameterType="java.lang.String">
+ select id, user_id, code, money, remainder_money, cost, status, currency, bank_card_no,
+    bank_card_name, address, order_no, order_id, create_time, update_time, by_user_id,
+    free, tx_hash
+    from ico_withdraw_record where currency ='SAN' and status =1
+  </select>
+
+</mapper>

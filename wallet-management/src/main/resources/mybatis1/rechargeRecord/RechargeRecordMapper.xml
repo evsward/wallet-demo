@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RechargeRecordMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		ICO_RECHARGE_RECORD
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		USER_ID,	
+		CODE,	
+		MONEY,	
+		REMAINDER_MONEY,	
+		STATUS,	
+		CURRENCY,	
+		ORDID,	
+		ORDDATE,	
+		ORDER_NO,	
+		CREATE_TIME,	
+		UPDATE_TIME,	
+		BY_USER_ID,	
+		FREE,	
+		TX_HASH,	
+		ADDRESS,	
+		id
+	</sql>
+	
+	<sql id="FieldInsert">
+		USER_ID,	
+		CODE,	
+		MONEY,	
+		REMAINDER_MONEY,	
+		STATUS,	
+		CURRENCY,	
+		ORDID,	
+		ORDDATE,	
+		ORDER_NO,	
+		BY_USER_ID,	
+		FREE,	
+		TX_HASH,	
+		ADDRESS,	
+		id,
+		IS_CONCENTRATE,
+		CONCENTRATE_TYPE
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{USER_ID},	
+		#{CODE},	
+		#{MONEY},	
+		#{REMAINDER_MONEY},	
+		#{STATUS},	
+		#{CURRENCY},	
+		#{ORDID},	
+		#{ORDDATE},	
+		#{ORDER_NO},	
+		#{BY_USER_ID},	
+		#{FREE},	
+		#{TX_HASH},	
+		#{ADDRESS},	
+		#{id},
+		#{is_concentrate},
+		#{concentrate_type}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+		 <trim prefix="" suffixOverrides=",">
+					<if test="USER_ID!=null">USER_ID ,</if>
+					<if test="CODE!=null">CODE,</if>
+					<if test="MONEY!=null">MONEY,</if>
+					<if test="REMAINDER_MONEY!=null">REMAINDER_MONEY = #{REMAINDER_MONEY},</if>
+					<if test="STATUS!=null">STATUS ,</if>
+					<if test="CURRENCY!=null">CURRENCY,</if>
+					<if test="ORDID!=null">ORDID ,</if>
+					<if test="ORDDATE!=null">ORDDATE ,</if>
+					<if test="ORDER_NO!=null">ORDER_NO ,</if>
+					<if test="BY_USER_ID!=null">BY_USER_ID ,</if>
+					<if test="FREE!=null">FREE ,</if>
+					<if test="TX_HASH!=null">TX_HASH ,</if>
+					<if test="ADDRESS!=null">ADDRESS ,</if>
+					<if test="id!=null">id ,</if>
+					<if test="IS_CONCENTRATE!=null">IS_CONCENTRATE ,</if>
+		 </trim>
+		) values (
+		 <trim prefix="" suffixOverrides=",">
+					<if test="USER_ID!=null"> #{USER_ID},</if>
+					<if test="CODE!=null">#{CODE},</if>
+					<if test="MONEY!=null"> #{MONEY},</if>
+					<if test="REMAINDER_MONEY!=null"> #{REMAINDER_MONEY},</if>
+					<if test="STATUS!=null">#{STATUS},</if>
+					<if test="CURRENCY!=null"> #{CURRENCY},</if>
+					<if test="ORDID!=null"> #{ORDID},</if>
+					<if test="ORDDATE!=null"> #{ORDDATE},</if>
+					<if test="ORDER_NO!=null"> #{ORDER_NO},</if>
+					<if test="BY_USER_ID!=null"> #{BY_USER_ID},</if>
+					<if test="FREE!=null"> #{FREE},</if>
+					<if test="TX_HASH!=null">#{TX_HASH},</if>
+					<if test="ADDRESS!=null"> #{ADDRESS},</if>
+					<if test="id!=null"> #{id},</if>
+					<if test="IS_CONCENTRATE!=null">#{IS_CONCENTRATE} ,</if>
+		 </trim>
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		 <trim prefix="set" suffixOverrides=",">
+					<if test="USER_ID!=null">USER_ID = #{USER_ID},</if>
+					<if test="CODE!=null">CODE = #{CODE},</if>
+					<if test="MONEY!=null">MONEY = #{MONEY},</if>
+					<if test="REMAINDER_MONEY!=null">REMAINDER_MONEY = #{REMAINDER_MONEY},</if>
+					<if test="STATUS!=null">STATUS = #{STATUS},</if>
+					<if test="CURRENCY!=null">CURRENCY = #{CURRENCY},</if>
+					<if test="ORDID!=null">ORDID = #{ORDID},</if>
+					<if test="ORDDATE!=null">ORDDATE = #{ORDDATE},</if>
+					<if test="ORDER_NO!=null">ORDER_NO = #{ORDER_NO},</if>
+					<!-- <if test="CREATE_TIME!=null">CREATE_TIME = #{CREATE_TIME},</if>
+					<if test="UPDATE_TIME!=null">UPDATE_TIME = #{UPDATE_TIME},</if> -->
+					<if test="BY_USER_ID!=null">BY_USER_ID = #{BY_USER_ID},</if>
+					<if test="FREE!=null">FREE = #{FREE},</if>
+					<if test="TX_HASH!=null">TX_HASH = #{TX_HASH},</if>
+					<if test="ADDRESS!=null">ADDRESS = #{ADDRESS},</if>
+		 </trim>
+		where 
+		id = #{id}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		SELECT 
+		I.USER_ID,	
+		I.CODE,	
+		I.MONEY,	
+		I.REMAINDER_MONEY,	
+		I.STATUS,	
+		I.CURRENCY,	
+		I.ORDID,	
+		I.ORDDATE,	
+		I.ORDER_NO,	
+		I.CREATE_TIME,	
+		I.UPDATE_TIME,	
+		I.BY_USER_ID,	
+		I.FREE,	
+		I.TX_HASH,	
+		I.ADDRESS,	
+		I.id,
+		U.USER_NAME
+		 FROM ICO_RECHARGE_RECORD I LEFT JOIN users_details U ON U.ID = I.user_id
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and I.ORDER_NO LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+		</if>
+		ORDER BY
+			I.create_time DESC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

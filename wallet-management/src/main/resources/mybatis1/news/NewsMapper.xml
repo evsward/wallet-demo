@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NewsMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		ICO_NEWS
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		TITLE,	
+		PICTURE_URL,	
+		PICTURE_NAME,	
+		RICH_TEXT,	
+		BROWSE_COUNT,	
+		NEWS_TYPE,	
+		LABEL,	
+		CREATE_TIME,	
+		UPDATE_TIME,	
+		id,
+		SUBTITLE
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{TITLE},	
+		#{PICTURE_URL},	
+		#{PICTURE_NAME},	
+		#{RICH_TEXT},	
+		#{BROWSE_COUNT},	
+		#{NEWS_TYPE},	
+		#{LABEL},	
+		#{CREATE_TIME},	
+		#{UPDATE_TIME},	
+		#{id}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+		id,
+		TITLE,	
+		PICTURE_URL,	
+		PICTURE_NAME,	
+		RICH_TEXT,	
+		BROWSE_COUNT,	
+		NEWS_TYPE,	
+		LABEL,
+		SUBTITLE
+		) values (
+		#{id},	
+		#{TITLE},	
+		#{PICTURE_URL},	
+		#{PICTURE_NAME},	
+		#{RICH_TEXT},	
+		#{BROWSE_COUNT},	
+		#{NEWS_TYPE},	
+		#{LABEL},
+		#{SUBTITLE}
+		)
+	</insert>
+	
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		 <trim prefix="set" suffixOverrides=",">
+					<if test="TITLE!=null">TITLE = #{TITLE},</if>
+					<if test="PICTURE_URL!=null">PICTURE_URL = #{PICTURE_URL},</if>
+					<if test="PICTURE_NAME!=null">PICTURE_NAME = #{PICTURE_NAME},</if>
+					<if test="RICH_TEXT!=null">RICH_TEXT = #{RICH_TEXT},</if>
+					<if test="BROWSE_COUNT!=null">BROWSE_COUNT = #{BROWSE_COUNT},</if>
+					<if test="NEWS_TYPE!=null">NEWS_TYPE = #{NEWS_TYPE},</if>
+					<if test="LABEL!=null">LABEL = #{LABEL},</if>
+					<if test="SUBTITLE!=null">SUBTITLE = #{SUBTITLE},</if>
+		 </trim>
+		where 
+		id = #{id}
+	</update>
+	
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			id = #{id}
+	</select>
+	
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and TITLE LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+		</if>
+		ORDER BY
+			create_time DESC
+	</select>
+	
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+                 #{item}
+		</foreach>
+	</delete>
+	
+	<!-- fh313596790qq(青苔) -->
+</mapper>

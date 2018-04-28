@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.AccRecordCommonMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.AccRecordDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="remainder_money" property="remainderMoney" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="ordid" property="ordid" jdbcType="VARCHAR" />
+    <result column="orddate" property="orddate" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="by_user_id" property="byUserId" jdbcType="VARCHAR" />
+    <result column="rela_account" property="relaAccount" jdbcType="VARCHAR" />
+    <result column="trade_in_out" property="tradeInOut" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+  </resultMap>
+  <!--  app查询所有记录 -->
+ <select id="listPageAccRecord" resultMap="BaseResultMap" parameterType="map" >
+	    select  id, money,status,currency,order_no,create_time,by_user_id ,rela_account,trade_in_out,price,amnt,type,address,hash,remark1 from 
+        (      
+               select  a.id,a.order_no,'' money,a.status,a.currency,a.create_time,a.by_user_id,'' rela_account,'' trade_in_out,'' price ,a.money amnt,'1' type,address,tx_hash hash,CONCAT('充值-',a.currency)remark1
+               from ico_recharge_record a 
+               where 1 = 1
+               and a.user_id = #{userId}
+            UNION
+               select b.id,b.order_no,'' money,b.status,b.currency,b.create_time,b.by_user_id,'' rela_account,'' trade_in_out,'' price ,b.money amnt,'2' type,address,tx_hash hash,CONCAT('提现-',b.currency)remark1
+               from ico_withdraw_record b 
+               where 1 = 1
+               and b.user_id = #{userId} 
+            UNION
+               select id,order_no,'' money,status,currency,create_time,by_user_id,rela_account,
+                   case when rela_user_id = #{userId} then 2 else 1 end trade_in_out,'' price ,money amnt,'3' type,'' address,'' hash,CONCAT('转账-',currency)remark1
+               from ico_transfer_record where user_id = #{userId} or rela_user_id = #{userId}
+            UNION   
+               select id,order_no,money,status,currency,create_time,by_user_id,'' rela_account, trade_in_out,price,amnt,'4' type,'' address,'' hash,CONCAT('兑换-',currency)remark1
+               from ico_exchange_record where user_id = #{userId}    
+        )c order by create_time desc
+
+  </select>
+  <!--  html查询充值记录 -->
+  <select id="listPageRechargeRecord" resultMap="BaseResultMap" parameterType="map" >
+    select  a.id,a.money,a.status,a.currency,a.order_no,a.create_time,a.by_user_id,a.address,tx_hash hash
+         from ico_recharge_record a 
+         where a.user_id = #{userId}  and  currency=#{currency}
+         order by a.create_time desc
+  </select>
+  <!--  html查询所提现记录 -->
+  <select id="listPageWithdrawRecord" resultMap="BaseResultMap" parameterType="map" >
+       select b.id,b.money,b.status,b.currency,b.order_no,b.create_time,b.by_user_id,b.address,tx_hash hash
+        from ico_withdraw_record b 
+        where b.user_id = #{userId}   and  currency=#{currency}
+        order by b.create_time desc
+  </select>
+  
+  <select id="listPageTransferRecord" resultMap="BaseResultMap" parameterType="map" >
+    select id,order_no,money,create_time,by_user_id,status,rela_account,
+    case when rela_user_id = #{userId} then 2 else 1 end trade_in_out
+    from ico_transfer_record 
+    where user_id = #{userId} or rela_user_id = #{userId}
+    order by create_time desc
+  </select>
+  
+  <select id="listPageExchangeRecord" resultMap="BaseResultMap" parameterType="map" >
+    select id,order_no,trade_in_out,money,price,amnt,status,currency,by_user_id,create_time,update_time 
+    from ico_exchange_record 
+    where user_id = #{userId}
+    order by create_time desc
+  </select>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.UserCoinMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.UserCoin" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="by_user_id" property="byUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, currency, address, create_time, update_time, by_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_coin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_coin
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.UserCoin" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into user_coin (id, user_id, currency, 
+      address, create_time, update_time, 
+      by_user_id)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{currency,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, now(), #{updateTime,jdbcType=TIMESTAMP}, 
+      #{byUserId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.UserCoin" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey>
+    insert into user_coin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="byUserId != null" >
+        by_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        now(),
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null" >
+        #{byUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.UserCoin" >
+    update user_coin
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byUserId != null" >
+        by_user_id = #{byUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.UserCoin" >
+    update user_coin
+    set user_id = #{userId,jdbcType=INTEGER},
+      currency = #{currency,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      by_user_id = #{byUserId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getUserCoinByUserid" parameterType="java.lang.String" resultType="java.lang.String">
+  	select
+  		address
+  	from
+  		user_coin
+  	where
+  		user_id = #{userid}
+  	and
+  		currency = 'ETH'
+  </select>
+
+  <select id="getUserCoinByAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+  		*
+  	from
+  		user_coin
+  	where
+  		address = #{address}
+  </select>
+
+  <select id="findCoinAddresByCurrency" parameterType="map" resultType="java.lang.String">
+    select address from user_coin where user_id=#{user_id} and currency =#{currency}
+  </select>
+
+
+  <select id="findTransferUserIdByConinAddress" parameterType="map" resultType="java.lang.String">
+    select user_id from user_coin where address=#{address} and currency =#{currency}
+  </select>
+
+
+	<insert id="batchInsertSelective" parameterType="java.util.List" >
+	    insert into user_coin (id, user_id, currency,
+	    address, create_time, update_time,
+	    by_user_id)
+	    values
+	    <foreach collection="list" item="list"  separator="," >
+	    ( (select  replace(uuid(),'-','') id  from dual), #{list.userId,jdbcType=VARCHAR}, #{list.currency,jdbcType=VARCHAR},
+	    #{list.address,jdbcType=VARCHAR}, now(), now(),
+	    #{list.byUserId,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <select id="getUserIdByAddress" parameterType="java.lang.String" resultType="java.lang.String">
+  	select user_id userId from user_coin where address = #{address}
+  </select>
+  <select id="getCoinListByUserId" parameterType="java.lang.String"  resultMap="BaseResultMap">
+  	select * from user_coin where user_id = #{userId}
+  </select>
+</mapper>

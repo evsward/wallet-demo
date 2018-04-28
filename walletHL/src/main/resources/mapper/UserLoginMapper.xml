@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.UserLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.UserLogin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="lastlogin_time" property="lastloginTime" jdbcType="TIMESTAMP" />
+    <result column="lastlogin_ip" property="lastloginIp" jdbcType="VARCHAR" />
+    <result column="lastlogin_port" property="lastloginPort" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="login_error_times" property="loginErrorTimes" jdbcType="INTEGER" />
+    <result column="lastlogin_error_time" property="lastloginErrorTime" jdbcType="TIMESTAMP" />
+    <result column="vip_flag" property="vipFlag" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, account, user_name, password, lastlogin_time, lastlogin_ip, lastlogin_port, 
+    status, login_error_times, lastlogin_error_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_login
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_login
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.UserLogin" >
+   <!--  <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey> -->
+    insert into user_login (id, user_id, account, 
+      user_name, password, lastlogin_time, 
+      lastlogin_ip, lastlogin_port, status, 
+      login_error_times, lastlogin_error_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{lastloginTime,jdbcType=TIMESTAMP}, 
+      #{lastloginIp,jdbcType=VARCHAR}, #{lastloginPort,jdbcType=VARCHAR}, '1', 
+      #{loginErrorTimes,jdbcType=INTEGER}, #{lastloginErrorTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.UserLogin" >
+    <!-- <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey> -->
+    insert into user_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="lastloginTime != null" >
+        lastlogin_time,
+      </if>
+      <if test="lastloginIp != null" >
+        lastlogin_ip,
+      </if>
+      <if test="lastloginPort != null" >
+        lastlogin_port,
+      </if>
+        status,
+      <if test="loginErrorTimes != null" >
+        login_error_times,
+      </if>
+      <if test="lastloginErrorTime != null" >
+        lastlogin_error_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginTime != null" >
+        #{lastloginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginIp != null" >
+        #{lastloginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginPort != null" >
+        #{lastloginPort,jdbcType=VARCHAR},
+      </if>
+      '1' ,
+      <if test="loginErrorTimes != null" >
+        #{loginErrorTimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastloginErrorTime != null" >
+        #{lastloginErrorTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.UserLogin" >
+    update user_login
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginTime != null" >
+        lastlogin_time = #{lastloginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginIp != null" >
+        lastlogin_ip = #{lastloginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginPort != null" >
+        lastlogin_port = #{lastloginPort,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="loginErrorTimes != null" >
+        login_error_times = #{loginErrorTimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastloginErrorTime != null" >
+        lastlogin_error_time = #{lastloginErrorTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.UserLogin" >
+    update user_login
+    set user_id = #{userId,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      lastlogin_time = #{lastloginTime,jdbcType=TIMESTAMP},
+      lastlogin_ip = #{lastloginIp,jdbcType=VARCHAR},
+      lastlogin_port = #{lastloginPort,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      login_error_times = #{loginErrorTimes,jdbcType=INTEGER},
+      lastlogin_error_time = #{lastloginErrorTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getUserByAccAndPass" parameterType="map" resultMap="BaseResultMap">
+        select * from user_login 
+        where 1=1
+        and (account = #{account} or user_name = #{account} )
+        and password = #{password}
+  </select>
+  <update id="updateLoginTimeById" parameterType="map">
+        update user_login 
+        set 
+            lastlogin_time = now(),
+            login_error_times =  0,
+            lastlogin_ip = #{lastloginIp,jdbcType=VARCHAR},
+            lastlogin_port = #{lastloginPort,jdbcType=VARCHAR}
+        where 
+            id = #{id}
+  </update>
+  
+   <update id="modifyPwd" parameterType="map">
+    update user_login 
+    set 
+        password  = #{password}
+    where 
+        account = #{account}
+  </update>
+  
+  <select id="getUserLoginByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select * from user_login where user_id = #{user_id}
+  </select>
+  
+  <select id="getUserInfoByAccount" parameterType="java.lang.String" resultType="map">
+        select a.mobile_phone ,a.email,a.user_name ,a.address,b.account,b.user_id ,a.province,a.user_type ,a.id,
+        case when a.sex = 1 then '男' else '女' end as sex 
+        from users_details a, user_login b 
+        where 1=1 
+        and a.id = b.user_id
+        and b.account = #{account}
+  </select>
+  <select id="findIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from user_login where account = #{account}
+  </select>
+  
+  <select id="getLastLoginTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select lastlogin_time,lastlogin_ip from user_login where account = #{account}
+  </select>
+  <select id="IsExistByAccountOrUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from user_login 
+    where 1 = 1
+    and (account = #{account} or user_name = #{account})
+  </select>
+  
+  <select id="getUserInfoByAccountOrUserName" parameterType="java.lang.String" resultType="map">
+    select a.mobile_phone ,a.email,a.user_name ,a.address,b.account,b.user_id ,a.province,a.user_type ,a.id,
+        case when a.sex = 1 then '男' else '女' end as sex 
+        from users_details a, user_login b 
+        where 1=1 
+        and a.id = b.user_id
+        and (b.account = #{account} or b.user_name = #{account})
+  </select>
+  <update id="updateAccount" parameterType="map" >
+    update user_login set account = #{account} where user_id = #{userId}
+  </update>
+  
+  <update id="updateICOBBSByUserName" parameterType="map">
+    update user_login set is_ico_bbs = #{isIcoBbs} 
+    where 1 = 1
+    and user_name in 
+    <foreach collection="userNameList" index="index" item="item" open="(" separator="," close=")">    
+        #{item}    
+    </foreach>
+  </update>
+  <select id="getUserList100" resultType="map">
+    select a.user_name,a.password,b.email from user_login a ,users_details b 
+    where 1 = 1
+    and a.user_id = b.id
+    and a.is_ico_bbs = 0
+    order by a.id
+    limit 0,100
+  </select>
+</mapper>

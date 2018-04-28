@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecochain.wallet.mapper.UsersDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.ecochain.wallet.entity.UsersDetails" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_img" property="userImg" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="public_key" property="publicKey" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="seeds" property="seeds" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="grade_id" property="gradeId" jdbcType="SMALLINT" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="reg_time" property="regTime" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="parent_usercode" property="parentUsercode" jdbcType="CHAR" />
+    <result column="usercode" property="usercode" jdbcType="CHAR" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+    <result column="mobile_phone" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="rcode" property="rcode" jdbcType="VARCHAR" />
+    <result column="idno" property="idno" jdbcType="VARCHAR" />
+    <result column="trans_password" property="transPassword" jdbcType="VARCHAR" />
+    <result column="pay_rcode" property="payRcode" jdbcType="VARCHAR" />
+    <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+    <result column="remark2" property="remark2" jdbcType="VARCHAR" />
+    <result column="remark3" property="remark3" jdbcType="VARCHAR" />
+    <result column="remark4" property="remark4" jdbcType="VARCHAR" />
+    <result column="remark5" property="remark5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_img, id_card, email, public_key, province, address, sex, seeds, user_name, 
+    grade_id, user_type, reg_time, salt, parent_usercode, usercode, alias, mobile_phone, 
+    rcode, idno, trans_password, pay_rcode, remark1, remark2, remark3, remark4, remark5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from users_details
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from users_details
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ecochain.wallet.entity.UsersDetails" useGeneratedKeys="true" keyProperty="id">
+    <!-- <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey> -->
+    insert into users_details (id, user_img, id_card, 
+      email, public_key, province, 
+      address, sex, seeds, 
+      user_name, grade_id, user_type, 
+      reg_time, salt, parent_usercode, 
+      usercode, alias, mobile_phone, 
+      rcode, idno, trans_password, 
+      pay_rcode, remark1, remark2, 
+      remark3, remark4, remark5
+      )
+    values (#{id,jdbcType=INTEGER}, #{userImg,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{publicKey,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{seeds,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{gradeId,jdbcType=SMALLINT}, #{userType,jdbcType=VARCHAR}, 
+      #{regTime,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{parentUsercode,jdbcType=CHAR}, 
+      #{usercode,jdbcType=CHAR}, #{alias,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, 
+      #{rcode,jdbcType=VARCHAR}, #{idno,jdbcType=VARCHAR}, #{transPassword,jdbcType=VARCHAR}, 
+      #{payRcode,jdbcType=VARCHAR}, #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, 
+      #{remark3,jdbcType=VARCHAR}, #{remark4,jdbcType=VARCHAR}, #{remark5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecochain.wallet.entity.UsersDetails"  useGeneratedKeys="true" keyProperty="id">
+    <!-- <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE" >
+      select  replace(uuid(),'-','')   from dual  
+    </selectKey> -->
+    insert into users_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="userImg != null" >
+        user_img,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="publicKey != null" >
+        public_key,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="seeds != null" >
+        seeds,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="gradeId != null" >
+        grade_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="regTime != null" >
+        reg_time,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="parentUsercode != null" >
+        parent_usercode,
+      </if>
+      <if test="usercode != null" >
+        usercode,
+      </if>
+      <if test="alias != null" >
+        alias,
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone,
+      </if>
+      <if test="rcode != null" >
+        rcode,
+      </if>
+      <if test="idno != null" >
+        idno,
+      </if>
+      <if test="transPassword != null" >
+        trans_password,
+      </if>
+      <if test="payRcode != null" >
+        pay_rcode,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="remark2 != null" >
+        remark2,
+      </if>
+      <if test="remark3 != null" >
+        remark3,
+      </if>
+      <if test="remark4 != null" >
+        remark4,
+      </if>
+      <if test="remark5 != null" >
+        remark5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=INTEGER},
+      <if test="userImg != null" >
+        #{userImg,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null" >
+        #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="seeds != null" >
+        #{seeds,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeId != null" >
+        #{gradeId,jdbcType=SMALLINT},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        #{regTime,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="parentUsercode != null" >
+        #{parentUsercode,jdbcType=CHAR},
+      </if>
+      <if test="usercode != null" >
+        #{usercode,jdbcType=CHAR},
+      </if>
+      <if test="alias != null" >
+        #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="rcode != null" >
+        #{rcode,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="transPassword != null" >
+        #{transPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="payRcode != null" >
+        #{payRcode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null" >
+        #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null" >
+        #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="remark4 != null" >
+        #{remark4,jdbcType=VARCHAR},
+      </if>
+      <if test="remark5 != null" >
+        #{remark5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecochain.wallet.entity.UsersDetails" >
+    update users_details
+    <set >
+      <if test="userImg != null" >
+        user_img = #{userImg,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null" >
+        public_key = #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="seeds != null" >
+        seeds = #{seeds,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeId != null" >
+        grade_id = #{gradeId,jdbcType=SMALLINT},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null" >
+        reg_time = #{regTime,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="parentUsercode != null" >
+        parent_usercode = #{parentUsercode,jdbcType=CHAR},
+      </if>
+      <if test="usercode != null" >
+        usercode = #{usercode,jdbcType=CHAR},
+      </if>
+      <if test="alias != null" >
+        alias = #{alias,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="rcode != null" >
+        rcode = #{rcode,jdbcType=VARCHAR},
+      </if>
+      <if test="idno != null" >
+        idno = #{idno,jdbcType=VARCHAR},
+      </if>
+      <if test="transPassword != null" >
+        trans_password = #{transPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="payRcode != null" >
+        pay_rcode = #{payRcode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="remark2 != null" >
+        remark2 = #{remark2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark3 != null" >
+        remark3 = #{remark3,jdbcType=VARCHAR},
+      </if>
+      <if test="remark4 != null" >
+        remark4 = #{remark4,jdbcType=VARCHAR},
+      </if>
+      <if test="remark5 != null" >
+        remark5 = #{remark5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecochain.wallet.entity.UsersDetails" >
+    update users_details
+    set user_img = #{userImg,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      public_key = #{publicKey,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      seeds = #{seeds,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      grade_id = #{gradeId,jdbcType=SMALLINT},
+      user_type = #{userType,jdbcType=VARCHAR},
+      reg_time = #{regTime,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      parent_usercode = #{parentUsercode,jdbcType=CHAR},
+      usercode = #{usercode,jdbcType=CHAR},
+      alias = #{alias,jdbcType=VARCHAR},
+      mobile_phone = #{mobilePhone,jdbcType=VARCHAR},
+      rcode = #{rcode,jdbcType=VARCHAR},
+      idno = #{idno,jdbcType=VARCHAR},
+      trans_password = #{transPassword,jdbcType=VARCHAR},
+      pay_rcode = #{payRcode,jdbcType=VARCHAR},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      remark2 = #{remark2,jdbcType=VARCHAR},
+      remark3 = #{remark3,jdbcType=VARCHAR},
+      remark4 = #{remark4,jdbcType=VARCHAR},
+      remark5 = #{remark5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="isExistTransPassword" parameterType="map" resultType="java.lang.Integer">
+        select count(1) from users_details 
+        where 1=1
+        and trans_password = #{transPassword} 
+        and id = #{userId}
+  </select>
+  
+  <select id="getUserInfoByUserId" parameterType="java.lang.Integer" resultType="map">
+      select b.user_id,b.account,a.email,a.user_name,a.address_msg,a.address,
+    case when a.sex =1 then '男' else '女' end as sex ,a.province,a.user_type,a.id,
+    a.mobile_phone,a.user_name ,b.vip_flag
+      from users_details a,user_login b 
+      where 1=1
+      and a.id = b.user_id
+      and a.id = #{userId}
+  </select>
+  
+  <select id="getUserIdByAddress" parameterType="java.lang.String" resultType="java.lang.String">
+    select id  userId from users_details where address = #{address}
+  </select>
+  
+  <update id="setTransPassword" parameterType="map">
+        update users_details set trans_password = #{transPassword} where id = #{userId} 
+  </update>
+  <select id="findIsExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from users_details where mobile_phone = #{mobilePhone}
+  </select>
+  <update id="updatePhone" parameterType="map">
+        update users_details set mobile_phone = #{mobilePhone} 
+        where 1 = 1
+        and id = #{userId} 
+  </update>
+  <select id="isExistByUserName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from users_details where user_name = #{userName}
+  </select>
+  <select id="getTransPassword" parameterType="java.lang.String" resultType = "java.lang.String">
+    select trans_password from users_details where id = #{userId}
+  </select>
+  <select id="realName" parameterType="com.ecochain.wallet.entity.UsersDetails">
+    update users_details 
+    set 
+	    name = #{name} ,
+	    nationality = #{nationality} ,
+	    id_card = #{idCard}
+    where id = #{id}
+  </select>
+</mapper>

@@ -1,0 +1,91 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://10.0.11.122:8084/eureka/,http://10.0.11.121:8084/eureka/
+server:
+    port: 8011
+    
+    
+wallet:
+    rootPath: c:\\ecowallet    
+    privateKey: cRBMGxnVXLgydAGHDFTLtFJpCdiLUt5zCTWEn2baJm4m7ubuiBa3
+
+spring:
+    application:
+        name: eco-lite-service
+    datasource:
+      readSize: 1
+        # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      write:
+        url: jdbc:mysql://localhost:3306/coin
+        #url: jdbc:mysql://139.219.107.200:3306/ico
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+  #     filters: stat
+  #     maxActive: 20
+  #     initialSize: 1
+  #     maxWait: 60000
+  #     minIdle: 1
+  #     timeBetweenEvictionRunsMillis: 60000
+  #     minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+  #     testWhileIdle: true
+  #     testOnBorrow: false
+  #     testOnReturn: false
+  #     poolPreparedStatements: true
+  #     maxOpenPreparedStatements: 20
+
+      read:
+        url: jdbc:mysql://localhost:3306/coin
+        username: root
+        password: 123456
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+  #     filters: stat
+  #     maxActive: 20
+  #     initialSize: 1
+  #     maxWait: 60000
+  #     minIdle: 1
+  #     timeBetweenEvictionRunsMillis: 60000
+  #     minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+  #     testWhileIdle: true
+  #     testOnBorrow: false
+  #     testOnReturn: false
+  #     poolPreparedStatements: true
+  #     maxOpenPreparedStatements: 20
+
+    redis:
+        database: 0
+        host: 47.100.12.56
+        #host: 139.219.107.200
+        password: yhyyfabric
+        port: 6379
+        pool:
+            max-idle: 200
+            min-idle: -1
+            max-active: 1024
+            max-wait: -1
+            
+#    mail:
+#        host: smtp.163.com
+#        username: 286352250@163.com
+#        password: 用户密码
+#        properties:
+#            mail: 
+#                smtp:
+#                    auth: true
+#                    timeout: 25000
+#    rabbitmq:
+#        host: 192.168.2.71
+#        port: 5672
+#        username: hxb
+#        password: hxb
+        
+
+#指定log的配置文件，以及记录Spring Boot的log级别  
+logging:
+    config: classpath:logback.xml     
